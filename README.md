@@ -1,5 +1,5 @@
 # TABI-2025
-Material correspondiente a la matería Tecnologia Aplicada a Bussiness Intelligence (TABI) - 2025.
+Material correspondiente a la matería Tecnologias Aplicadas para Bussiness Intelligence (TABI) - 2025.
 
 ### Teorías
 #### Clase 1
