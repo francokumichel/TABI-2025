@@ -1,5 +1,5 @@
 # TABI-2025
-Material correspondiente a la matería Tecnologia Aplicada a Bussiness Intelligence (TABI) - 2025.
+Material correspondiente a la matería Tecnologias Aplicadas para Bussiness Intelligence (TABI) - 2025.
 
 ### Teorías
 #### Clase 1
@@ -10,4 +10,4 @@ Material correspondiente a la matería Tecnologia Aplicada a Bussiness Intellige
 - [EDA 2025 con Python](https://colab.research.google.com/drive/1RRRELIyse-JQIDgsdIIoCapu-SL7XKEw?usp=sharing)
 
 ### Practicas
-- [Practica 1](https://github.com/francokumichel/TABI-2025/Practicas/Practica-1)
+- [Practica 1](https://github.com/francokumichel/TABI-2025/tree/main/Practicas/Practica-1)
