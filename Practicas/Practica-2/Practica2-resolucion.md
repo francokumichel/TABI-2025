@@ -20,7 +20,100 @@ Comentarios:
   3. `<span style="color: orange">`Proveedores que realizaron ventas con `<span style="color:green">`descuento por promoción mayor a $5000 en un determinado `<span style="color:orange">`horario por `<span style="color:orange">`zona.
 
 
-## ✅ **3**) Modelo Dimensional Conceptual
+
+## ✅ 2) Consultas en SQL:
+
+###### *1.*
+
+```sql
+
+SELECT dz.nombre AS zona,
+       COUNT(v.id) AS total_ventas
+FROM venta v
+JOIN cliente c ON v.cliente_id = c.id
+JOIN domicilio d ON c.domicilio_id = d.id
+JOIN domicilio_zona dz ON d.zona_id = dz.id
+WHERE v.fecha_hora BETWEEN '2025-01-01' AND '2025-01-31'
+GROUP BY dz.nombre
+ORDER BY total_ventas DESC;
+```
+
+###### *2.*
+
+```sql
+
+SELECT DATE(v.fecha_hora) AS fecha,
+       COUNT(v.id) AS total_ventas
+FROM venta v
+GROUP BY DATE(v.fecha_hora)
+ORDER BY total_ventas DESC;
+```
+
+###### *3.*
+
+```sql
+
+SELECT dz.nombre AS zona,
+       SUM(v.descuento_promocion) AS total_descuento
+FROM venta v
+JOIN cliente c ON v.cliente_id = c.id
+JOIN domicilio d ON c.domicilio_id = d.id
+JOIN domicilio_zona dz ON d.zona_id = dz.id
+GROUP BY dz.nombre
+ORDER BY total_descuento DESC
+LIMIT 10;
+```
+
+###### *4.*
+
+```sql
+
+SELECT p.nombre AS proveedor,
+       tp.descripcion AS tipo_proveedor,
+       COUNT(DISTINCT v.cliente_id) AS clientes_distintos
+FROM venta v
+JOIN proveedor p ON v.proveedor_id = p.id
+JOIN tipo_proveedor tp ON p.tipo_id = tp.id
+GROUP BY p.nombre, tp.descripcion
+ORDER BY clientes_distintos DESC;
+```
+
+###### *5.*
+
+```sql
+
+SELECT dz.nombre AS zona,
+       tp.descripcion AS tipo_proveedor,
+       COUNT(v.id) AS total_ventas
+FROM venta v
+JOIN proveedor p ON v.proveedor_id = p.id
+JOIN tipo_proveedor tp ON p.tipo_id = tp.id
+JOIN cliente c ON v.cliente_id = c.id
+JOIN domicilio d ON c.domicilio_id = d.id
+JOIN domicilio_zona dz ON d.zona_id = dz.id
+GROUP BY dz.nombre, tp.descripcion
+ORDER BY dz.nombre, total_ventas DESC
+LIMIT 3;
+```
+
+###### *6.*
+
+```sql
+SELECT p.nombre AS proveedor,
+       dz.nombre AS zona,
+       v.fecha_hora,
+       v.descuento_promocion
+FROM venta v
+JOIN proveedor p ON v.proveedor_id = p.id
+JOIN cliente c ON v.cliente_id = c.id
+JOIN domicilio d ON c.domicilio_id = d.id
+JOIN domicilio_zona dz ON d.zona_id = dz.id
+WHERE v.descuento_promocion > 5000
+  AND TIME(v.fecha_hora) BETWEEN '18:00:00' AND '22:00:00'
+ORDER BY v.fecha_hora DESC;
+```
+
+✅ **3**) Modelo Dimensional Conceptual
 
 ## ❄️ Modelo Dimensional Copo de Nieve (Snowflake Schema)
 
