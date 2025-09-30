@@ -1,6 +1,6 @@
 # Práctica 2
 
-1-. Copiar 6 consultas de la práctica anterior, y sombrear con `<span style="color:orange;">`color naranja los términos correspondientes a dimensiones y con `<span style="color:green;">`color verde los términos correspondientes a medidas.
+1-. Copiar 6 consultas de la práctica anterior, y sombrear con <span style="color:orange;">color naranja</span> los términos correspondientes a dimensiones y con <span style="color:green;"> color verde</span> los términos correspondientes a medidas.
 
 En nuestro caso, modificamos un poco las consultas para que sean más variadas y abarquen mas dimensiones y medidas.
 
@@ -151,7 +151,7 @@ Grano: Una venta individual (por pedido realizado)
 
 Algo a tener en cuenta es que se consideró eliminar Zona (está normalizada dentro de las dimensiones Cliente, Proveedor y Repartidor a través de jerarquías).
 
-Ahora bien, ¿las consultas planteadas en los ejercicios anteriores se pueden responder con este modelo propuesto?. A continuación listamos las consultas y con que se pueden responder en base a lo planteado 
+Ahora bien, ¿las consultas planteadas en los ejercicios anteriores se pueden responder con este modelo propuesto?. A continuación listamos las consultas y con que se pueden responder en base a lo planteado: 
 
 - Zonas donde se registraron más ventas en un periodo dado --> Podemos responderla con dim_zona y dim_tiempo
 - Top 10 zonas donde se registraron los mayores acumulados de descuentos por promoción --> podemos responderla con dim_zona y medida descuento_promocion
@@ -160,4 +160,4 @@ Ahora bien, ¿las consultas planteadas en los ejercicios anteriores se pueden re
 
 4-. Especificar la granularidad del modelo.
 
-La granularidad está dada por HECHO_VENTA contando así con ventas individuales realizada por un cliente a un proveedor, en un momento determinado, con un repartidor asignado, a través de un tipo de pago específico.
+La granularidad está dada por **HECHO_VENTA** contando así con ventas individuales realizada por un cliente a un proveedor, en un momento determinado, con un repartidor asignado, a través de un tipo de pago específico.
