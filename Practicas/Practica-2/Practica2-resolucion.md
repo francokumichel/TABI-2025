@@ -42,10 +42,10 @@ ORDER BY total_ventas DESC;
 
 ```sql
 
-SELECT DATE(v.fecha_hora) AS fecha,
+SELECT CAST(v.fecha_hora AS DATE) AS fecha,
        COUNT(v.id) AS total_ventas
 FROM venta v
-GROUP BY DATE(v.fecha_hora)
+GROUP BY CAST(v.fecha_hora AS DATE)
 ORDER BY total_ventas DESC;
 ```
 
@@ -82,18 +82,25 @@ ORDER BY clientes_distintos DESC;
 
 ```sql
 
-SELECT dz.nombre AS zona,
-       tp.descripcion AS tipo_proveedor,
-       COUNT(v.id) AS total_ventas
-FROM venta v
-JOIN proveedor p ON v.proveedor_id = p.id
-JOIN tipo_proveedor tp ON p.tipo_id = tp.id
-JOIN cliente c ON v.cliente_id = c.id
-JOIN domicilio d ON c.domicilio_id = d.id
-JOIN domicilio_zona dz ON d.zona_id = dz.id
-GROUP BY dz.nombre, tp.descripcion
-ORDER BY dz.nombre, total_ventas DESC
-LIMIT 3;
+SELECT zona,
+       tipo_proveedor,
+       total_ventas
+FROM (
+    SELECT dz.nombre AS zona,
+           tp.descripcion AS tipo_proveedor,
+           COUNT(v.id) AS total_ventas,
+           ROW_NUMBER() OVER (PARTITION BY dz.nombre ORDER BY COUNT(v.id) DESC) AS rn
+    FROM venta v
+    JOIN proveedor p ON v.proveedor_id = p.id
+    JOIN tipo_proveedor tp ON p.tipo_id = tp.id
+    JOIN cliente c ON v.cliente_id = c.id
+    JOIN domicilio d ON c.domicilio_id = d.id
+    JOIN domicilio_zona dz ON d.zona_id = dz.id
+    GROUP BY dz.nombre, tp.descripcion
+) sub
+WHERE rn <= 3
+ORDER BY zona, total_ventas DESC;
+
 ```
 
 ###### *6.*
@@ -109,11 +116,15 @@ JOIN cliente c ON v.cliente_id = c.id
 JOIN domicilio d ON c.domicilio_id = d.id
 JOIN domicilio_zona dz ON d.zona_id = dz.id
 WHERE v.descuento_promocion > 5000
-  AND TIME(v.fecha_hora) BETWEEN '18:00:00' AND '22:00:00'
+  AND CAST(v.fecha_hora AS TIME) BETWEEN '18:00:00' AND '22:00:00'
+ORDER BY v.fecha_hora DESC;
+EN '18:00:00' AND '22:00:00'
 ORDER BY v.fecha_hora DESC;
 ```
 
-✅ **3**) Modelo Dimensional Conceptual
+
+
+## ✅ **3**) Modelo Dimensional Conceptual
 
 ## ❄️ Modelo Dimensional Copo de Nieve (Snowflake Schema)
 
