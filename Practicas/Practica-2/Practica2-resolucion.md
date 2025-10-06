@@ -1,6 +1,6 @@
 # Práctica 2
 
-1-. Copiar 6 consultas de la práctica anterior, y sombrear con <span style="color:orange;">color naranja</span> los términos correspondientes a dimensiones y con <span style="color:green;"> color verde</span> los términos correspondientes a medidas.
+##### 1-. Copiar 6 consultas de la práctica anterior, y sombrear con <span style="color:orange;">color naranja</span> los términos correspondientes a dimensiones y con <span style="color:green;"> color verde</span> los términos correspondientes a medidas.
 
 En nuestro caso, modificamos un poco las consultas para que sean más variadas y abarquen mas dimensiones y medidas.
 
@@ -18,7 +18,7 @@ En nuestro caso, modificamos un poco las consultas para que sean más variadas y
   2. Obtener el top 3 de <span style="color:orange">tipos de proveedores</span> con mayor <span style="color:green">cantidad de ventas</span> por <span style="color:orange">zona</span>, considerando el <span style="color:orange">año en curso.
   3. <span style="color:orange">Proveedores</span> que realizaron <span style="color:orange">ventas</span> con <span style="color:green">descuento</span> por promoción mayor a $5000 en un determinado <span style="color:orange">horario</span> por <span style="color:orange">zona.
 
-2-.Elija 4 consultas de la practica 1 y escriba las consultas SQL necesarias para responderlas.
+##### 2-.Elija 4 consultas de la practica 1 y escriba las consultas SQL necesarias para responderlas.
 
 Se van mencionando las consultas seleccionadas y su correspondiente resolución en SQL.
 
@@ -117,6 +117,6 @@ Se emplea el modelo conceptual de tipo estrella dada su adaptabilidad y empleo e
 **Hecho principal: Venta**
 
 
-4-. Especificar la granularidad del modelo.
+##### 4-. Especificar la granularidad del modelo.
 
 La granularidad está dada por **HECHO_VENTA** contando así con ventas individuales realizada por un cliente a un proveedor, en un momento determinado, con un repartidor asignado, a través de un tipo de pago específico.
