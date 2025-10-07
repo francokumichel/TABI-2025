@@ -112,7 +112,7 @@ ORDER BY zona, total_ventas DESC;
 Se emplea el modelo conceptual de tipo estrella dada su adaptabilidad y empleo en futuras aplicaciones en clase
 
 
-![Modelo conceptual generado](images/modelo-conceptual.png)
+![Modelo conceptual generado](images/Diagrama-conceptual.png)
 
 **Hecho principal: Venta**
 
