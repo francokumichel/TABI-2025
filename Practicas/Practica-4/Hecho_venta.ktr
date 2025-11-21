@@ -437,11 +437,11 @@
   <notepads>
   </notepads>
   <connection>
-    <name>delivery_db</name>
+    <name>dw_delivery</name>
     <server>127.0.0.1</server>
     <type>MYSQL</type>
     <access>Native</access>
-    <database>tabi2025</database>
+    <database>dw_delivery</database>
     <port>3306</port>
     <username>root</username>
     <password>Encrypted 2be98afc86aa7f2e4cb79ad7fd39babdb</password>
@@ -503,140 +503,254 @@
       </attribute>
     </attributes>
   </connection>
-  <connection>
-    <name>dw_vuelos</name>
-    <server>127.0.0.1</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>dw_vuelos</database>
-    <port>5432</port>
-    <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f2e4cb79ad7fd39babdb</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>5432</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
-  <connection>
-    <name>post-vuelos</name>
-    <server>127.0.0.1</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>demo</database>
-    <port>5432</port>
-    <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f2e4cb79ad7fd39babdb</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>5432</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <order>
     <hop>
-      <from>Búsqueda/actualización en dimensión</from>
-      <to>Salida Tabla</to>
+      <from>venta</from>
+      <to>busco pk proveedor</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk proveedor</from>
+      <to>busco pk zona</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk zona</from>
+      <to>busco pk pago</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk pago</from>
+      <to>busco pk repartidor</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk repartidor</from>
+      <to>busco pk tiempo</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk tiempo</from>
+      <to>busco pk domicilio</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk domicilio</from>
+      <to>busco pk cliente</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>busco pk cliente</from>
+      <to>Llenando tabla de hechos (venta)</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Abort</from>
+      <to>Abort 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Entrada Tabla</from>
-      <to>Búsqueda/actualización en dimensión</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Búsqueda/actualización en dimensión 2</from>
-      <to>Salida Tabla 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Entrada Tabla 2</from>
-      <to>Búsqueda/actualización en dimensión 2</to>
+      <from>Abort 2</from>
+      <to>Abort 3</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Búsqueda/actualización en dimensión</name>
+    <name>Abort</name>
+    <type>Abort</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <row_threshold>0</row_threshold>
+    <message/>
+    <always_log_rows>Y</always_log_rows>
+    <abort_option>ABORT</abort_option>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1520</xloc>
+      <yloc>812</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Abort 2</name>
+    <type>Abort</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <row_threshold>0</row_threshold>
+    <message/>
+    <always_log_rows>Y</always_log_rows>
+    <abort_option>ABORT</abort_option>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1720</xloc>
+      <yloc>812</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Abort 3</name>
+    <type>Abort</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <row_threshold>0</row_threshold>
+    <message/>
+    <always_log_rows>Y</always_log_rows>
+    <abort_option>ABORT</abort_option>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1920</xloc>
+      <yloc>812</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Block this step until steps finish</name>
+    <type>BlockUntilStepsFinish</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <steps>
+      </steps>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1320</xloc>
+      <yloc>712</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Llenando tabla de hechos (venta)</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dw_delivery</connection>
+    <schema>dw_delivery</schema>
+    <table>fact_venta</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>venta_id</column_name>
+        <stream_name>venta_id</stream_name>
+      </field>
+      <field>
+        <column_name>fecha_hora_id</column_name>
+        <stream_name>id_dim_tiempo</stream_name>
+      </field>
+      <field>
+        <column_name>proveedor_id</column_name>
+        <stream_name>id_dim_proveedor</stream_name>
+      </field>
+      <field>
+        <column_name>cliente_id</column_name>
+        <stream_name>id_dim_cliente</stream_name>
+      </field>
+      <field>
+        <column_name>repartidor_id</column_name>
+        <stream_name>id_dim_repartidor</stream_name>
+      </field>
+      <field>
+        <column_name>zona_id</column_name>
+        <stream_name>id_dim_zona</stream_name>
+      </field>
+      <field>
+        <column_name>pago_id</column_name>
+        <stream_name>id_dim_pago</stream_name>
+      </field>
+      <field>
+        <column_name>tipo_proveedor_hizo</column_name>
+        <stream_name>tipo_proveedor_venta</stream_name>
+      </field>
+      <field>
+        <column_name>monto_origen</column_name>
+        <stream_name>monto</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>704</xloc>
+      <yloc>286</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk cliente</name>
     <type>DimensionLookup</type>
     <description/>
     <distribute>Y</distribute>
@@ -646,24 +760,59 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <schema>public</schema>
-    <table>dim_flights</table>
-    <connection>dw_vuelos</connection>
+    <schema>dw_delivery</schema>
+    <table>dim_cliente</table>
+    <connection>dw_delivery</connection>
     <commit>100</commit>
     <update>N</update>
     <fields>
       <key>
-        <name>flight_id</name>
-        <lookup>pk_flight</lookup>
+        <name>id_cliente</name>
+        <lookup>pk_cliente</lookup>
       </key>
       <date>
         <name/>
         <from>date_from</from>
         <to>date_to</to>
       </date>
+      <field>
+        <name>id_dim_cliente</name>
+        <lookup>pk_cliente</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>nombres</name>
+        <lookup>nombres</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>apellidos</name>
+        <lookup>apellidos</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>sexo</name>
+        <lookup>sexo</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>domicilio_id</name>
+        <lookup>domicilio_id</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha_alta</name>
+        <lookup>fecha_alta</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha_baja</name>
+        <lookup>fecha_baja</lookup>
+        <update>None</update>
+      </field>
       <return>
         <name>id</name>
-        <rename>dim_pk_flight</rename>
+        <rename>id_cliente</rename>
         <creation_method>tablemax</creation_method>
         <use_autoinc>N</use_autoinc>
         <version>version</version>
@@ -687,13 +836,480 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>539</xloc>
-      <yloc>366</yloc>
+      <xloc>576</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Entrada Tabla</name>
+    <name>busco pk domicilio</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_domicilio</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>id_domicilio</name>
+        <lookup>pk_domicilio</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_domicilio</name>
+        <lookup>pk_domicilio</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>zona_id</name>
+        <lookup>zona_id</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>calle</name>
+        <lookup>calle</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>numero</name>
+        <lookup>numero</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>calle_entre_1</name>
+        <lookup>calle_entre_1</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>calle_entre_2</name>
+        <lookup>calle_entre_2</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>piso</name>
+        <lookup>piso</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>departamento</name>
+        <lookup>departamento</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>id_domicilio</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>512</xloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk pago</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_pago</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>id_pago</name>
+        <lookup>pk_pago</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_pago</name>
+        <lookup>pk_pago</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>venta_id</name>
+        <lookup>venta_id</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>tipo_id</name>
+        <lookup>tipo_id</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>monto</name>
+        <lookup>monto</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>tiempo_id</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>288</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk proveedor</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_proveedor</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>proveedor_id</name>
+        <lookup>pk_proveedor</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_proveedor</name>
+        <lookup>id</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>tipo_proveedor_venta</name>
+        <lookup>tipo_proveedor</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>id_proveedor</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>-1</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk repartidor</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_repartidor</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>id_repartidor</name>
+        <lookup>pk_repartidor</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_repartidor</name>
+        <lookup>pk_repartidor</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>nombres</name>
+        <lookup>nombres</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>apellidos</name>
+        <lookup>apellidos</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>sexo</name>
+        <lookup>sexo</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha_alta</name>
+        <lookup>fecha_alta</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha_baja</name>
+        <lookup>fecha_baja</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>id_repartidor</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk tiempo</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_tiempo</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>id_tiempo</name>
+        <lookup>pk_tiempo</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_tiempo</name>
+        <lookup>pk_tiempo</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha</name>
+        <lookup>fecha</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>fecha_dias</name>
+        <lookup>fecha_dias</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>id_tiempo</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>448</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>busco pk zona</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>dw_delivery</schema>
+    <table>dim_zona</table>
+    <connection>dw_delivery</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>zona_id</name>
+        <lookup>pk_zona_id</lookup>
+      </key>
+      <date>
+        <name/>
+        <from>date_from</from>
+        <to>date_to</to>
+      </date>
+      <field>
+        <name>id_dim_zona</name>
+        <lookup>pk_zona</lookup>
+        <update>None</update>
+      </field>
+      <field>
+        <name>nombre</name>
+        <lookup>nombre</lookup>
+        <update>None</update>
+      </field>
+      <return>
+        <name>id</name>
+        <rename>id_zona_id</rename>
+        <creation_method>tablemax</creation_method>
+        <use_autoinc>N</use_autoinc>
+        <version>version</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>192</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>venta</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -703,18 +1319,31 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>delivery_db</connection>
+    <connection>dw_delivery</connection>
     <sql>SELECT
-  id
-, fecha_hora
-, proveedor_id
-, cliente_id
-, monto_origen
-, repartidor_id
-, propina
-, costo_servicio
-, descuento_promocion
-FROM pedidos.venta
+    v.id AS id_venta,
+    v.fecha_hora as id_venta_tiempo,
+
+    -- FKs directas de venta
+	v.proveedor_id,
+    v.cliente_id,
+    v.repartidor_id,
+    -- Métricas
+    v.monto_origen as monto_origen,
+    v.costo_servicio as costo,
+    v.descuento_promocion as descuento_promocion,
+    v.propina
+
+FROM pedidos.venta v
+
+LEFT JOIN pedidos.cliente c
+    ON v.cliente_id = c.id
+
+LEFT JOIN pedidos.domicilio d
+    ON c.domicilio_id = d.id
+
+LEFT JOIN pedidos.proveedor p
+    ON v.proveedor_id = p.id
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -726,11 +1355,11 @@ FROM pedidos.venta
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>id</name>
+        <name>id_venta</name>
         <length>9</length>
         <precision>0</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>id</comments>
+        <origin>venta</origin>
+        <comments>id_venta</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -749,11 +1378,11 @@ FROM pedidos.venta
       <value-meta>
         <type>Timestamp</type>
         <storagetype>normal</storagetype>
-        <name>fecha_hora</name>
+        <name>id_venta_tiempo</name>
         <length>0</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>fecha_hora</comments>
+        <origin>venta</origin>
+        <comments>id_venta_tiempo</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -775,7 +1404,7 @@ FROM pedidos.venta
         <name>proveedor_id</name>
         <length>4</length>
         <precision>0</precision>
-        <origin>Entrada Tabla</origin>
+        <origin>venta</origin>
         <comments>proveedor_id</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
@@ -798,8 +1427,31 @@ FROM pedidos.venta
         <name>cliente_id</name>
         <length>4</length>
         <precision>0</precision>
-        <origin>Entrada Tabla</origin>
+        <origin>venta</origin>
         <comments>cliente_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_AR</date_format_locale>
+        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>repartidor_id</name>
+        <length>4</length>
+        <precision>0</precision>
+        <origin>venta</origin>
+        <comments>repartidor_id</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -821,7 +1473,7 @@ FROM pedidos.venta
         <name>monto_origen</name>
         <length>9</length>
         <precision>2</precision>
-        <origin>Entrada Tabla</origin>
+        <origin>venta</origin>
         <comments>monto_origen</comments>
         <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
@@ -839,59 +1491,13 @@ FROM pedidos.venta
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>repartidor_id</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>repartidor_id</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_AR</date_format_locale>
-        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>Number</type>
         <storagetype>normal</storagetype>
-        <name>propina</name>
+        <name>costo</name>
         <length>9</length>
         <precision>2</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>propina</comments>
-        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_AR</date_format_locale>
-        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Number</type>
-        <storagetype>normal</storagetype>
-        <name>costo_servicio</name>
-        <length>9</length>
-        <precision>2</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>costo_servicio</comments>
+        <origin>venta</origin>
+        <comments>costo</comments>
         <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -913,278 +1519,9 @@ FROM pedidos.venta
         <name>descuento_promocion</name>
         <length>9</length>
         <precision>2</precision>
-        <origin>Entrada Tabla</origin>
+        <origin>venta</origin>
         <comments>descuento_promocion</comments>
         <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_AR</date_format_locale>
-        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-    </row-meta>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>339</xloc>
-      <yloc>366</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Salida Tabla</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dw_vuelos</connection>
-    <schema>public</schema>
-    <table>fact_flights</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>amount</column_name>
-        <stream_name>amount</stream_name>
-      </field>
-      <field>
-        <column_name>dim_pk_flight</column_name>
-        <stream_name>dim_pk_flight</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>739</xloc>
-      <yloc>366</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Búsqueda/actualización en dimensión 2</name>
-    <type>DimensionLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <schema>public</schema>
-    <table>dim_flights</table>
-    <connection>dw_vuelos</connection>
-    <commit>100</commit>
-    <update>N</update>
-    <fields>
-      <key>
-        <name>flight_id</name>
-        <lookup>pk_flight</lookup>
-      </key>
-      <date>
-        <name/>
-        <from>date_from</from>
-        <to>date_to</to>
-      </date>
-      <return>
-        <name>id</name>
-        <rename>dim_pk_flight</rename>
-        <creation_method>tablemax</creation_method>
-        <use_autoinc>N</use_autoinc>
-        <version>version</version>
-      </return>
-    </fields>
-    <sequence/>
-    <min_year>1900</min_year>
-    <max_year>2199</max_year>
-    <cache_size>5000</cache_size>
-    <preload_cache>N</preload_cache>
-    <use_start_date_alternative>N</use_start_date_alternative>
-    <start_date_alternative>none</start_date_alternative>
-    <start_date_field_name/>
-    <useBatch>N</useBatch>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>790</xloc>
-      <yloc>173</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Entrada Tabla 2</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>post-vuelos</connection>
-    <sql>SELECT
-  ticket_no
-, flight_id
-, fare_conditions
-, amount
-FROM bookings.ticket_flights
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>Y</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>binary-string</storagetype>
-        <storage-meta>
-          <value-meta>
-            <type>String</type>
-            <storagetype>normal</storagetype>
-            <name>ticket_no</name>
-            <length>13</length>
-            <precision>-1</precision>
-            <origin>Entrada Tabla</origin>
-            <comments>ticket_no</comments>
-            <conversion_Mask/>
-            <decimal_symbol>.</decimal_symbol>
-            <grouping_symbol>,</grouping_symbol>
-            <currency_symbol/>
-            <trim_type>none</trim_type>
-            <case_insensitive>N</case_insensitive>
-            <collator_disabled>Y</collator_disabled>
-            <collator_strength>0</collator_strength>
-            <sort_descending>N</sort_descending>
-            <output_padding>N</output_padding>
-            <date_format_lenient>N</date_format_lenient>
-            <date_format_locale>es_AR</date_format_locale>
-            <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-            <lenient_string_to_number>N</lenient_string_to_number>
-          </value-meta>
-        </storage-meta>
-        <name>ticket_no</name>
-        <length>13</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>ticket_no</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_AR</date_format_locale>
-        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>flight_id</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>flight_id</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_AR</date_format_locale>
-        <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>binary-string</storagetype>
-        <storage-meta>
-          <value-meta>
-            <type>String</type>
-            <storagetype>normal</storagetype>
-            <name>fare_conditions</name>
-            <length>10</length>
-            <precision>-1</precision>
-            <origin>Entrada Tabla</origin>
-            <comments>fare_conditions</comments>
-            <conversion_Mask/>
-            <decimal_symbol>.</decimal_symbol>
-            <grouping_symbol>,</grouping_symbol>
-            <currency_symbol/>
-            <trim_type>none</trim_type>
-            <case_insensitive>N</case_insensitive>
-            <collator_disabled>Y</collator_disabled>
-            <collator_strength>0</collator_strength>
-            <sort_descending>N</sort_descending>
-            <output_padding>N</output_padding>
-            <date_format_lenient>N</date_format_lenient>
-            <date_format_locale>es_AR</date_format_locale>
-            <date_format_timezone>America/Buenos_Aires</date_format_timezone>
-            <lenient_string_to_number>N</lenient_string_to_number>
-          </value-meta>
-        </storage-meta>
-        <name>fare_conditions</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>fare_conditions</comments>
-        <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -1202,11 +1539,11 @@ FROM bookings.ticket_flights
       <value-meta>
         <type>Number</type>
         <storagetype>normal</storagetype>
-        <name>amount</name>
-        <length>10</length>
+        <name>propina</name>
+        <length>9</length>
         <precision>2</precision>
-        <origin>Entrada Tabla</origin>
-        <comments>amount</comments>
+        <origin>venta</origin>
+        <comments>propina</comments>
         <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1232,60 +1569,8 @@ FROM bookings.ticket_flights
       </output>
     </remotesteps>
     <GUI>
-      <xloc>590</xloc>
-      <yloc>173</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Salida Tabla 2</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dw_vuelos</connection>
-    <schema>public</schema>
-    <table>fact_flights</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>amount</column_name>
-        <stream_name>amount</stream_name>
-      </field>
-      <field>
-        <column_name>dim_pk_flight</column_name>
-        <stream_name>dim_pk_flight</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>990</xloc>
-      <yloc>173</yloc>
+      <xloc>64</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

@@ -537,10 +537,6 @@
         <attribute>N</attribute>
       </attribute>
       <attribute>
-        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
         <code>PORT_NUMBER</code>
         <attribute>3306</attribute>
       </attribute>
@@ -729,7 +725,7 @@ FROM pedidos.pago
     <fields>
       <key>
         <name>id</name>
-        <lookup>pk_domicilio</lookup>
+        <lookup>pk_pago</lookup>
       </key>
       <date>
         <name>domicilio_id</name>
